@@ -1,6 +1,14 @@
 # eos_docker
 
 ## RUN docker 
-    $ docker run -it -p 8722:22/tcp --name eos_run ubuntu:16.04
+```
+docker pull tony92151/eostest2
+```
 
-copy and paste from "eos_container.sh" to conatainer
+## Docker build
+
+```
+cd /Path to docker file/Dockerfile
+docker build -t tony92151/eostest2 .
+docker login && docker push tony92151/eostest2
+```
