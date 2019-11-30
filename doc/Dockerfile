@@ -47,7 +47,7 @@ RUN apt install curl &&\
 
 #RUN touch codeserver.txt
     
-#ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
+ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
 
 #RUN cat codeserver.txt
 
