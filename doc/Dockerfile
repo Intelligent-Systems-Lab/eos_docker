@@ -45,11 +45,20 @@ RUN apt install curl &&\
     wget https://github.com/cdr/code-server/releases/download/2.1688-vsc1.39.2/code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz &&\
     tar zxvf code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz
 
-#RUN touch codeserver.txt
-    
+#https://github.com/ml-tooling/ml-workspace/blob/develop/Dockerfile#L930
+RUN \
+    # Make zsh the default shell
+    chsh -s $(which bash) root
+
+# run code server   
 ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
 
-#RUN cat codeserver.txt
+# run hardware and performance monitor
+# https://github.com/netdata/netdata
+EXPOSE 19999
+RUN wget https://my-netdata.io/kickstart.sh &&\
+    bash kickstart.sh --dont-wait --stable-channel --disable-telemetry
+
 
 
 
