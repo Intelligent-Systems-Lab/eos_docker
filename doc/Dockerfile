@@ -24,11 +24,19 @@ ENV eos_path=/root/eos_build
 RUN mkdir -p $eos_path
 
 RUN cd $eos_path &&\
-    wget https://github.com/EOSIO/eos/releases/download/v1.8.6/eosio_1.8.6-1-ubuntu-16.04_amd64.deb &&\
-    apt -y install ./eosio_1.8.6-1-ubuntu-16.04_amd64.deb &&\
-    wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.6.1/eosio.cdt_1.6.1-1_amd64.deb &&\
-    apt -y install ./eosio.cdt_1.6.1-1_amd64.deb
+    wget https://github.com/EOSIO/eos/releases/download/v2.0.0/eosio_2.0.0-1-ubuntu-16.04_amd64.deb &&\
+    apt -y install ./eosio_2.0.0-1-ubuntu-16.04_amd64.deb
+    #wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.6.1/eosio.cdt_1.6.1-1_amd64.deb &&\
+    #apt -y install ./eosio.cdt_1.6.1-1_amd64.deb
 
+# RUN cd $eos_path &&\
+#     git clone --recursive https://github.com/EOSIO/eosio.cdt.git --branch v1.6.3 --single-branch &&\
+#     cd eosio.cdt &&\
+#     mkdir build &&\
+#     cd build &&\
+#     cmake .. &&\
+#     make -j8 &&\
+#     make install
 RUN cd $eos_path &&\
     mkdir contracts &&\
     cd contracts &&\
@@ -50,6 +58,10 @@ RUN \
     # Make zsh the default shell
     chsh -s $(which bash) root
 
+# setting code-server default to bash and resize font
+RUN mkdir -p /root/.local/share/code-server/User &&\
+    touch /root/.local/share/code-server/User/settings.json &&\
+    echo '{"editor.fontSize": 18,"terminal.integrated.fontSize": 16,"terminal.integrated.shell.linux": "/bin/bash",}' >> /root/.local/share/code-server/User/settings.json
 # run code server   
 ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
 
