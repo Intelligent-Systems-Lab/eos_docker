@@ -7,9 +7,12 @@ RUN apt-get update && apt-get -y upgrade &&\
     apt-get install -y apt-utils openssh-server software-properties-common &&\
     apt-get install -y autotools-dev automake cmake curl git wget zip build-essential gcc pkg-config net-tools nano
 
+RUN apt-get install -y gdb
+
 RUN mkdir /var/run/sshd
 RUN echo 'root:eospc' | chpasswd
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config &&\
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
   
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
@@ -67,9 +70,9 @@ ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.
 
 # run hardware and performance monitor
 # https://github.com/netdata/netdata
-EXPOSE 19999
-RUN wget https://my-netdata.io/kickstart.sh &&\
-    bash kickstart.sh --dont-wait --stable-channel --disable-telemetry
+# EXPOSE 19999
+# RUN wget https://my-netdata.io/kickstart.sh &&\
+#     /bin/bash kickstart.sh --dont-wait --stable-channel --disable-telemetry
 
 
 
