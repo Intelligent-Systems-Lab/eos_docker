@@ -46,21 +46,16 @@ RUN cd $eos_path &&\
     #wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.6.1/eosio.cdt_1.6.1-1_amd64.deb &&\
     #apt -y install ./eosio.cdt_1.6.1-1_amd64.deb
 
-# RUN cd $eos_path &&\
-#     git clone --recursive https://github.com/EOSIO/eosio.cdt.git --branch v1.6.3 --single-branch &&\
-#     cd eosio.cdt &&\
-#     mkdir build &&\
-#     cd build &&\
-#     cmake .. &&\
-#     make -j8 &&\
-#     make install
 RUN cd $eos_path &&\
     mkdir contracts &&\
     cd contracts &&\
-    git clone --recursive https://github.com/eosio/eosio.cdt --branch v1.6.1 --single-branch &&\
+    git clone --recursive https://github.com/eosio/eosio.cdt --branch v1.7.0 --single-branch &&\
     cd eosio.cdt &&\
-    ./build.sh &&\
-    ./install.sh &&\
+    mkdir build &&\
+    cd build &&\
+    cmake .. &&\
+    make -j8 &&\
+    make install &&\
     cd $eos_path/contracts &&\
     rm -r eosio.cdt
 
