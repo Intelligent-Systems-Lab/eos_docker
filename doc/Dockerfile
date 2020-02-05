@@ -19,6 +19,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
   
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
+
+RUN /etc/init.d/ssh restart
   
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
@@ -26,9 +28,19 @@ CMD ["/usr/sbin/sshd", "-D"]
 ENV eos_path=/root/eos_build
 RUN mkdir -p $eos_path
 
+# install cmake 3.12.0
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.12.0/cmake-3.12.0.tar.gz &&\
+    tar zxvf cmake-3.12.0.tar.gz &&\
+    cd cmake-3.12.0 &&\
+    ./bootstrap &&\
+    make -j8 &&\
+    make install &&\
+    cmake --version
+
 RUN cd $eos_path &&\
     wget https://github.com/EOSIO/eos/releases/download/v2.0.0/eosio_2.0.0-1-ubuntu-16.04_amd64.deb &&\
-    apt -y install ./eosio_2.0.0-1-ubuntu-16.04_amd64.deb
+    apt -y install ./eosio_2.0.0-1-ubuntu-16.04_amd64.deb &&\
+    rm -r eosio_2.0.0-1-ubuntu-16.04_amd64.deb
     #wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.6.1/eosio.cdt_1.6.1-1_amd64.deb &&\
     #apt -y install ./eosio.cdt_1.6.1-1_amd64.deb
 
@@ -54,7 +66,8 @@ ENV PASSWORD=eospc
 
 RUN apt install curl &&\
     wget https://github.com/cdr/code-server/releases/download/2.1688-vsc1.39.2/code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz &&\
-    tar zxvf code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz
+    tar zxvf code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz &&\
+    rm -r code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz
 
 #https://github.com/ml-tooling/ml-workspace/blob/develop/Dockerfile#L930
 RUN \
@@ -67,13 +80,6 @@ RUN mkdir -p /root/.local/share/code-server/User &&\
     echo '{"editor.fontSize": 18,"terminal.integrated.fontSize": 16,"terminal.integrated.shell.linux": "/bin/bash",}' >> /root/.local/share/code-server/User/settings.json
 # run code server   
 ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
-
-# run hardware and performance monitor
-# https://github.com/netdata/netdata
-# EXPOSE 19999
-# RUN wget https://my-netdata.io/kickstart.sh &&\
-#     /bin/bash kickstart.sh --dont-wait --stable-channel --disable-telemetry
-
 
 
 
