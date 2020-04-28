@@ -7,7 +7,7 @@ RUN apt-get update && apt-get -y upgrade &&\
     apt-get install -y apt-utils openssh-server software-properties-common &&\
     apt-get install -y autotools-dev automake curl git wget zip build-essential gcc pkg-config net-tools nano
 
-RUN apt-get install -y gdb
+#RUN apt-get install -y gdb
 
 #RUN mkdir /var/run/sshd
 RUN echo 'root:eospc' | chpasswd
@@ -40,9 +40,9 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.12.0/cmake-3.12.0
     cmake --version
 
 RUN cd $eos_path &&\
-    wget https://github.com/EOSIO/eos/releases/download/v2.0.0/eosio_2.0.0-1-ubuntu-16.04_amd64.deb &&\
-    apt -y install ./eosio_2.0.0-1-ubuntu-16.04_amd64.deb &&\
-    rm -r eosio_2.0.0-1-ubuntu-16.04_amd64.deb
+    wget https://github.com/EOSIO/eos/releases/download/v2.0.4/eosio_2.0.4-1-ubuntu-16.04_amd64.deb &&\
+    apt -y install ./eosio_2.0.4-1-ubuntu-16.04_amd64.deb &&\
+    rm -r eosio_2.0.4-1-ubuntu-16.04_amd64.deb
     #wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.6.1/eosio.cdt_1.6.1-1_amd64.deb &&\
     #apt -y install ./eosio.cdt_1.6.1-1_amd64.deb
 
@@ -64,9 +64,9 @@ EXPOSE 8080
 ENV PASSWORD=eospc
 
 RUN apt install curl &&\
-    wget https://github.com/cdr/code-server/releases/download/2.1688-vsc1.39.2/code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz &&\
-    tar zxvf code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz &&\
-    rm -r code-server2.1688-vsc1.39.2-linux-x86_64.tar.gz
+    wget https://github.com/cdr/code-server/releases/download/3.1.1/code-server-3.1.1-linux-x86_64.tar.gz && \
+    tar zxvf code-server-3.1.1-linux-x86_64.tar.gz && \
+    rm -r code-server-3.1.1-linux-x86_64.tar.gz
 
 #https://github.com/ml-tooling/ml-workspace/blob/develop/Dockerfile#L930
 RUN \
@@ -78,4 +78,4 @@ RUN mkdir -p /root/.local/share/code-server/User &&\
     touch /root/.local/share/code-server/User/settings.json &&\
     echo '{"editor.fontSize": 18,"terminal.integrated.fontSize": 16,"terminal.integrated.shell.linux": "/bin/bash",}' >> /root/.local/share/code-server/User/settings.json
 # run code server   
-ENTRYPOINT ./code-server2.1688-vsc1.39.2-linux-x86_64/code-server >> codeserver.txt
+ENTRYPOINT ./code-server-3.1.1-linux-x86_64/code-server >> codeserver.txt
