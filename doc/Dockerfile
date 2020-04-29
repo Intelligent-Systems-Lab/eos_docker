@@ -78,4 +78,4 @@ RUN mkdir -p /root/.local/share/code-server/User &&\
     touch /root/.local/share/code-server/User/settings.json &&\
     echo '{"editor.fontSize": 18,"terminal.integrated.fontSize": 16,"terminal.integrated.shell.linux": "/bin/bash",}' >> /root/.local/share/code-server/User/settings.json
 # run code server   
-ENTRYPOINT ./code-server-3.1.1-linux-x86_64/code-server >> codeserver.txt
+ENTRYPOINT ./code-server-3.1.1-linux-x86_64/code-server --host 0.0.0.0  >> codeserver.txt
